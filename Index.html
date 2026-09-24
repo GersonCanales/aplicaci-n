@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aplicación</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#020604;color:#72ff98;font-family:Consolas,monospace;display:flex;align-items:center;justify-content:center;padding:18px}
+.panel{width:min(760px,100%);padding:22px;border:1px solid #17632f;border-radius:10px;background:#061009;box-shadow:0 0 32px #0b391c}
+.top{display:flex;justify-content:space-between;border-bottom:1px solid #164b28;padding-bottom:12px}
+h1{font-size:19px;letter-spacing:2px}.bar{height:8px;background:#102518;border-radius:10px;overflow:hidden;margin:15px 0 22px}
+#p{height:100%;width:0;background:#63ff8c;transition:width .08s linear}
+#term{font-size:13px;line-height:1.75;white-space:pre-wrap}.line{opacity:0;transform:translateY(2px);transition:.06s}.show{opacity:1;transform:none}
+.dim{color:#3f9b58}.yellow{color:#ffe780}.red{color:#ff7272;font-weight:bold}
+#notice{display:none;margin-top:16px;padding:13px;border:1px solid #a83e3e;background:#1c0909;color:#ff7777;font-weight:bold}
+</style></head>
+<body><main class="panel">
+<div class="top"><span>UTILITY SERVICE</span><span id="clock"></span></div>
+<h1>SINCRONIZACIÓN DE DISPOSITIVO</h1>
+<div id="status">Inicializando…</div><div class="bar"><div id="p"></div></div>
+<div id="term"></div>
+<div id="notice">TODOS ESTOS DATOS HAN SIDO TRANSFERIDOS AL USUARIO QUE CREÓ ESTE ARCHIVO.</div>
+</main>
+<script>
+const rows=[
+["[SYS] Inicializando módulos…","dim"],["[SYS] Analizando entorno…","dim"],
+["SESSION_REF = SID::C7E9-1F4A-2B8D",""],["DEVICE_REF = DV::A91F-7C22-0B4E",""],
+["CONNECTION_TYPE = CELLULAR",""],["MOBILE_NETWORK_REF = CELL::4D71-A80C-92F6",""],
+["PHONE_REF = TEL::••••-••••-71",""],["LOCATION_REF = GEO::83B1-44D0-C7A2",""],
+["SESSION_IP = 198.51.100.42",""],["PAYLOAD :: 9F2A:C17D:84E0:33BC:71A8","yellow"],
+["REMOTE_ROUTE :: R41/8C/F2/09/77","yellow"],["[OK] Integridad verificada.",""],
+["REMOTE_SYNC :: COMPLETED","red"],["TRANSFER_STATUS :: COMPLETED","red"]];
+let i=0;const t=document.getElementById("term"),p=document.getElementById("p"),s=document.getElementById("status");
+function step(){
+ if(i>=rows.length){p.style.width="100%";s.textContent="Proceso finalizado.";document.getElementById("notice").style.display="block";return}
+ const d=document.createElement("div");d.className="line "+rows[i][1];d.textContent=rows[i][0];t.appendChild(d);
+ requestAnimationFrame(()=>d.classList.add("show"));p.style.width=((i+1)/rows.length*100)+"%";i++;setTimeout(step,85);
+}
+function clk(){document.getElementById("clock").textContent=new Date().toLocaleTimeString()}
+setInterval(clk,1000);clk();setTimeout(step,100);
+</script></body></html>
